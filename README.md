@@ -7,7 +7,7 @@ Most are converted Docker Compose scripts.
 ## Current Scripts 
 * photoview (converted docker-compose)
 * photoprism (converted docker-compose)
-* Nextcloud-postgres-redis
+* Nextcloud-postgres-redis under CC BY-NC 4.0
 
 ## Future 
 * Paperless-ng 
