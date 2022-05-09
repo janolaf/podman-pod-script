@@ -11,8 +11,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    bind-mount-options:/opt/valheim/config: z
-    bind-mount-options:/opt/valheim/data: z
+    bind-mount-options:/opt/valheim/config: Z
+    bind-mount-options:/opt/valheim/data: Z
     io.containers.autoupdate/valheim: registry
   creationTimestamp: "2022-05-05T02:35:05Z"
   labels:

@@ -6,10 +6,10 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    bind-mount-options:/opt/authentik/backups: z
-    bind-mount-options:/opt/authentik/custom-templates: z
+    bind-mount-options:/opt/authentik/backups: Z
+    bind-mount-options:/opt/authentik/custom-templates: Z
     bind-mount-options:/opt/authentik/db: z
-    bind-mount-options:/opt/authentik/media: z
+    bind-mount-options:/opt/authentik/media: Z
     io.containers.autoupdate/authentik-db: registry
     io.containers.autoupdate/authentik-redis: registry
     io.containers.autoupdate/authentik-server: registry
