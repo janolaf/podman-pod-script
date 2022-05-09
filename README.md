@@ -4,18 +4,14 @@ Some have not been tested in a while.
 
 Most are converted Docker Compose scripts.
 
-## Current Scripts 
+## Current SHell Scripts 
 * photoview (converted docker-compose)
 * photoprism (converted docker-compose)
 * Nextcloud-postgres-redis under CC BY-NC 4.0
 
-## Future 
-* Paperless-ng 
-* Mayan EDMS
-* Jellyfin (Linuxserver.io)
-* gitea-postgres
-* minecraft
-* prometheus-grafana
-
-
-Unfortunately I need to go back and comment my shell scripts.
+## Current Kube YAML
+* heimdall
+* jupyter
+* mealie
+* valhiem docker server
+* authentik
