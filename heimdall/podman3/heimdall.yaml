@@ -1,7 +1,7 @@
 # Save the output of this file and use kubectl create -f to import
 # it into Kubernetes.
 #
-# Created with podman-4.1.0
+# Created with podman-3.4.7
 
 # NOTE: If you generated this yaml from an unprivileged and rootless podman container on an SELinux
 # enabled system, check the podman generate kube man page for steps to follow to ensure that your pod/container
@@ -12,17 +12,11 @@ kind: Pod
 metadata:
   annotations:
     bind-mount-options:/srv/containers/heimdall: Z
-    io.containers.autoupdate/heimdall: ""
-    io.kubernetes.cri-o.TTY/heimdall: "false"
-    io.podman.annotations.autoremove/heimdall: "TRUE"
-    io.podman.annotations.cid-file/heimdall: /run/user/1000/container-heimdall.service.ctr-id
-    io.podman.annotations.init/heimdall: "FALSE"
-    io.podman.annotations.privileged/heimdall: "FALSE"
-    io.podman.annotations.publish-all/heimdall: "FALSE"
-  creationTimestamp: "2022-05-17T02:31:50Z"
+    io.containers.autoupdate/heimdall: registry:w
+  creationTimestamp: "2022-05-05T02:31:49Z"
   labels:
-    app: heimdall-pod
-  name: heimdall-pod
+    app: heimdall
+  name: heimdall
 spec:
   containers:
   - image: docker.io/linuxserver/heimdall:latest

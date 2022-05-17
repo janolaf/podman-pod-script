@@ -8,6 +8,36 @@
 # has the right permissions to access the volumes added.
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    bind-mount-options:/srv/containers/heimdall: Z
+    io.containers.autoupdate/heimdall: ""
+    io.kubernetes.cri-o.TTY/heimdall: "false"
+    io.podman.annotations.autoremove/heimdall: "TRUE"
+    io.podman.annotations.cid-file/heimdall: /run/user/1000/container-heimdall.service.ctr-id
+    io.podman.annotations.init/heimdall: "FALSE"
+    io.podman.annotations.privileged/heimdall: "FALSE"
+    io.podman.annotations.publish-all/heimdall: "FALSE"
+  creationTimestamp: "2022-05-17T02:32:00Z"
+  labels:
+    app: heimdall-pod
+  name: heimdall-pod
+spec:
+  ports:
+  - name: "80"
+    nodePort: 32130
+    port: 80
+    targetPort: 80
+  - name: "443"
+    nodePort: 32712
+    port: 443
+    targetPort: 443
+  selector:
+    app: heimdall-pod
+  type: NodePort
+---
+apiVersion: v1
 kind: Pod
 metadata:
   annotations:
@@ -19,7 +49,7 @@ metadata:
     io.podman.annotations.init/heimdall: "FALSE"
     io.podman.annotations.privileged/heimdall: "FALSE"
     io.podman.annotations.publish-all/heimdall: "FALSE"
-  creationTimestamp: "2022-05-17T02:31:50Z"
+  creationTimestamp: "2022-05-17T02:32:00Z"
   labels:
     app: heimdall-pod
   name: heimdall-pod
