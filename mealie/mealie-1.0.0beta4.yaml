@@ -29,7 +29,7 @@ spec:
   containers:
   - env:
     - name: BASE_URL
-      value: http://food.home.janolaf.ca
+      value: http://mealie.foo.com
     - name: MAX_WORKERS
       value: "1"
     - name: WEB_CONCURRENCY
