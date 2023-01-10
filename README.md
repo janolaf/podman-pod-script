@@ -5,9 +5,8 @@ Some have not been tested in a while.
 Most are converted Docker Compose scripts.
 
 ## Current SHell Scripts 
-* photoview (converted docker-compose)
 * photoprism (converted docker-compose)
-* Nextcloud-postgres-redis under CC BY-NC 4.0
+* audiobookshelf
 
 ## Current Kube YAML
 * heimdall
@@ -15,3 +14,6 @@ Most are converted Docker Compose scripts.
 * mealie
 * valhiem docker server
 * authentik
+
+# TODO
+Need to add Udici instructions. If you use SELinux Audiobookshelf will be prevented from playing audio files from a shared directory.
