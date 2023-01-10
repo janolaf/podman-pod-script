@@ -7,6 +7,10 @@ Most are converted Docker Compose scripts.
 ## Current SHell Scripts 
 * photoprism (converted docker-compose)
 * audiobookshelf
+* calibre-web
+* photoview
+* typemill
+* audiobookshelf
 
 ## Current Kube YAML
 * heimdall
@@ -16,4 +20,5 @@ Most are converted Docker Compose scripts.
 * authentik
 
 # TODO
-Need to add Udici instructions. If you use SELinux Audiobookshelf will be prevented from playing audio files from a shared directory.
+Need to add Udici instructions. If you use SELinux, Audiobookshelf will be 
+prevented from playing audio files from a shared directory.
