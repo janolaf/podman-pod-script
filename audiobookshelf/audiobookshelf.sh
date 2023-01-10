@@ -8,7 +8,7 @@ podman container create --pod audiobookshelf-pod --name audiobookshelf-app \
 	--security-opt "label=type:audiobookshelf-app.process" \
 	-v /opt/audiobookshelf/config:/config:Z \
 	-v /opt/audiobookshelf/metadata:/metadata:Z \
-	-v /srv/share/music/audiobooks:/audiobooks:ro \
+	-v /audiobooks:/audiobooks:ro \
 	--replace \
 	ghcr.io/advplyr/audiobookshelf:latest
 
