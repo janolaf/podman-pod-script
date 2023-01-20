@@ -5,7 +5,7 @@ podman container create --replace --name mealie-api --pod mealie \
 	-e ALLOW_SIGNUP=true \
 	-e MAX_WORKERS=1 \
 	-e WEB_CONCURRENCY=1 \
-       	-e BASE_URL=http://food.home.janolaf.ca \
+    -e BASE_URL=http://food.home.com \
 	hkotel/mealie:api-v1.0.0beta-5
 
 podman container create --replace --name mealie-frontend --pod mealie \
