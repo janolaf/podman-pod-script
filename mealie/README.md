@@ -4,7 +4,6 @@ I have both shell script and kubernetes yaml.
 
 The yaml and shell scripts will both create a pod called mealie with two containers called mealie-api and mealie-frontend.
 
-The yaml script is still beta-5.
 
 
 ## Mealie podman shell script
@@ -37,10 +36,8 @@ and containers should automatically be replaced with the updated containers.
 
 ## Mealie yaml
 
-Currently using beta-5. 
-
 ### If you convert shell script to yaml
 
-It is important to note, mealie-frontend enviroment variable `API_URL` is the name of mealie-api container. The shell script creates a container call mealie-api. Converting it using `podman generate kube` generates a name that combines the pod name with the container name. This breaks Mealie. `mealie=frontend` cannot find `mealie-api`.
+It is important to note, mealie-frontend enviroment variable `API_URL` is the name of mealie-api container. The shell script creates a container call mealie-api. Converting it using `podman generate kube` generates a name that combines the pod name with the container name, `mealie-mealie-api`. This breaks Mealie. `mealie=frontend` cannot find `mealie-api`.
 
 In the yaml script, you will either have to edit `API_URL` value to `mealie-mealie-api:9000` or change the container name to `api`.
