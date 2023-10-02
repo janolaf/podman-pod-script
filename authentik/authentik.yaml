@@ -1,20 +1,18 @@
 # Save the output of this file and use kubectl create -f to import
 # it into Kubernetes.
 #
-# Created with podman-3.4.7
+# Created with podman-4.6.1
 apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    bind-mount-options:/opt/authentik/backups: Z
-    bind-mount-options:/opt/authentik/custom-templates: Z
-    bind-mount-options:/opt/authentik/db: z
-    bind-mount-options:/opt/authentik/media: Z
+    bind-mount-options: /opt/authentik/custom-templates:z
     io.containers.autoupdate/authentik-db: registry
+    io.containers.autoupdate/authentik-ldap: registry
     io.containers.autoupdate/authentik-redis: registry
     io.containers.autoupdate/authentik-server: registry
     io.containers.autoupdate/authentik-worker: registry
-  creationTimestamp: "2022-05-06T00:26:45Z"
+  creationTimestamp: "2023-10-02T15:39:50Z"
   labels:
     app: authentik
   name: authentik
@@ -29,93 +27,114 @@ spec:
       hostPort: 9000
     - containerPort: 9443
       hostPort: 9443
-    resources: {}
-    securityContext:
-      capabilities:
-        drop:
-        - CAP_MKNOD
-        - CAP_NET_RAW
-        - CAP_AUDIT_WRITE
     volumeMounts:
     - mountPath: /data
-      name: 738515e616c5dc31cd342343f12677a736ba236b16135639d8b727922eb4fc6e-pvc
+      name: b8d67f3cb3168ec47fd5a573fa3a1d0fcc97fa9b98296c12b1eb71266263f8b3-pvc
   - args:
     - postgres
+    env:
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+    - name: POSTGRES_USER
+      value: authentik
+    - name: POSTGRES_PASSWORD
+      value: IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0
     image: docker.io/library/postgres:14-alpine
     name: authentik-db
-    resources: {}
-    securityContext:
-      capabilities:
-        drop:
-        - CAP_MKNOD
-        - CAP_NET_RAW
-        - CAP_AUDIT_WRITE
     volumeMounts:
     - mountPath: /var/lib/postgresql/data/pgdata
       name: opt-authentik-db-host-0
     - mountPath: /var/lib/postgresql/data
-      name: d9a974e2732e9452a735d04d2261bcfe1134c2b22f5a01ddc16dcd4d8ba40c8d-pvc
+      name: 50732094dabc51136c13d532e083d29d84e74dd62b84fc337c0575a08f2f5f1d-pvc
   - args:
     - server
+    env:
+    - name: AUTHENTIK_POSTGRESQL__USER
+      value: authentik
+    - name: AUTHENTIK_POSTGRESQL__NAME
+      value: authentik
+    - name: AUTHENTIK_POSTGRESQL__PASSWORD
+      value: IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0
+    - name: AUTHENTIK_SECRET_KEY
+      value: SDCdtYtaHnlAzSr63fTIASYqqOfDQlNtECPIzFx1969JqdhO6A
+    - name: AUTHENTIK_POSTGRESQL__HOST
+      value: 127.0.0.1
+    - name: AUTHENTIK_REDIS__HOST
+      value: 127.0.0.1
     image: ghcr.io/goauthentik/server:latest
     name: authentik-server
-    resources: {}
     securityContext:
-      capabilities:
-        drop:
-        - CAP_MKNOD
-        - CAP_NET_RAW
-        - CAP_AUDIT_WRITE
+      runAsNonRoot: true
     volumeMounts:
-    - mountPath: /templates
-      name: opt-authentik-custom-templates-host-0
     - mountPath: /media
-      name: opt-authentik-media-host-1
+      name: opt-authentik-media-host-0
+    - mountPath: /templates
+      name: opt-authentik-custom-templates-host-1
   - args:
     - worker
+    env:
+    - name: AUTHENTIK_POSTGRESQL__USER
+      value: authentik
+    - name: AUTHENTIK_POSTGRESQL__PASSWORD
+      value: IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0
+    - name: AUTHENTIK_SECRET_KEY
+      value: SDCdtYtaHnlAzSr63fTIASYqqOfDQlNtECPIzFx1969JqdhO6A
+    - name: AUTHENTIK_POSTGRESQL__NAME
+      value: authentik
+    - name: AUTHENTIK_REDIS__HOST
+      value: 127.0.0.1
+    - name: AUTHENTIK_POSTGRESQL__HOST
+      value: 127.0.0.1
     image: ghcr.io/goauthentik/server:latest
     name: authentik-worker
-    resources: {}
     securityContext:
-      capabilities:
-        drop:
-        - CAP_MKNOD
-        - CAP_NET_RAW
-        - CAP_AUDIT_WRITE
+      runAsNonRoot: true
     volumeMounts:
-    - mountPath: /templates
-      name: opt-authentik-custom-templates-host-0
     - mountPath: /backups
-      name: opt-authentik-backups-host-1
+      name: opt-authentik-backups-host-0
     - mountPath: /media
-      name: opt-authentik-media-host-2
-  restartPolicy: Never
+      name: opt-authentik-media-host-1
+    - mountPath: /templates
+      name: opt-authentik-custom-templates-host-2
+  - env:
+    - name: AUTHENTIK_HOST
+      value: https://sso.home.janolaf.ca
+    - name: AUTHENTIK_INSECURE
+      value: "false"
+    - name: AUTHENTIK_TOKEN
+      value: TOKEN
+    image: ghcr.io/goauthentik/ldap:latest
+    name: authentik-ldap
+    securityContext:
+      runAsNonRoot: true
   volumes:
-  - hostPath:
-      path: /opt/authentik/db
-      type: Directory
-    name: opt-authentik-db-host-0
-  - name: d9a974e2732e9452a735d04d2261bcfe1134c2b22f5a01ddc16dcd4d8ba40c8d-pvc
+  - name: 50732094dabc51136c13d532e083d29d84e74dd62b84fc337c0575a08f2f5f1d-pvc
     persistentVolumeClaim:
-      claimName: d9a974e2732e9452a735d04d2261bcfe1134c2b22f5a01ddc16dcd4d8ba40c8d
+      claimName: 50732094dabc51136c13d532e083d29d84e74dd62b84fc337c0575a08f2f5f1d
+  - hostPath:
+      path: /opt/authentik/media
+      type: Directory
+    name: opt-authentik-media-host-0
   - hostPath:
       path: /opt/authentik/custom-templates
       type: Directory
-    name: opt-authentik-custom-templates-host-0
+    name: opt-authentik-custom-templates-host-1
+  - hostPath:
+      path: /opt/authentik/backups
+      type: Directory
+    name: opt-authentik-backups-host-0
   - hostPath:
       path: /opt/authentik/media
       type: Directory
     name: opt-authentik-media-host-1
   - hostPath:
-      path: /opt/authentik/backups
+      path: /opt/authentik/custom-templates
       type: Directory
-    name: opt-authentik-backups-host-1
-  - hostPath:
-      path: /opt/authentik/media
-      type: Directory
-    name: opt-authentik-media-host-2
-  - name: 738515e616c5dc31cd342343f12677a736ba236b16135639d8b727922eb4fc6e-pvc
+    name: opt-authentik-custom-templates-host-2
+  - name: b8d67f3cb3168ec47fd5a573fa3a1d0fcc97fa9b98296c12b1eb71266263f8b3-pvc
     persistentVolumeClaim:
-      claimName: 738515e616c5dc31cd342343f12677a736ba236b16135639d8b727922eb4fc6e
-status: {}
-
+      claimName: b8d67f3cb3168ec47fd5a573fa3a1d0fcc97fa9b98296c12b1eb71266263f8b3
+  - hostPath:
+      path: /opt/authentik/db
+      type: Directory
+    name: opt-authentik-db-host-0
