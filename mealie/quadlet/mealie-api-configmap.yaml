@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mealie-api-config
+data:
+    WEB_GUNICORN: "true"
+      # change BASE_URL
+    BASE_URL: http://food.home.localhost
+    MAX_WORKERS: "1"
+    ALLOW_SIGNUP: "false"
+    WEB_CONCURRENCY: "1"
+  

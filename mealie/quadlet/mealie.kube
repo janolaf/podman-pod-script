@@ -1,0 +1,12 @@
+# mealie.kube
+[Unit]
+Description=Mealie Pod
+
+[Kube]
+Yaml=/opt/mealie/mealie.yaml
+PublishPort=10006:3000
+#Volume=volume-mealie.volume:/opt/mealie/data:z
+
+# Start on boot
+[Install]
+WantedBy=multi-user.target default.target
