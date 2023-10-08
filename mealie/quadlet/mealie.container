@@ -1,0 +1,23 @@
+# mealie.kube
+[Unit]
+Description=Mealie Recipes Webapp
+
+[Container]
+ContainerName=mealie
+Image=ghcr.io/mealie-recipes/mealie:nightly
+AutoUpdate=registry
+
+PublishPort=10006:9000
+
+Volume=/opt/mealie/data:/app/data:z
+
+Environment=ALLOW_SIGNUP=true
+Environment=MAX_WORKERS=1
+Environment=WEB_CONCURRENCY=1
+Environment=BASE_URL=https://food.home.janolaf.ca
+
+Timezone=America/Winnipeg
+
+[Install]
+WantedBy=multi-user.target default.target
+
