@@ -1,19 +1,22 @@
 # Save the output of this file and use kubectl create -f to import
 # it into Kubernetes.
 #
-# Created with podman-3.4.7
-
-# NOTE: If you generated this yaml from an unprivileged and rootless podman container on an SELinux
-# enabled system, check the podman generate kube man page for steps to follow to ensure that your pod/container
-# has the right permissions to access the volumes added.
----
+# Created with podman-4.4.1
 apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    bind-mount-options:/opt/jupyter: z
-    io.containers.autoupdate/jupyter: registry
-  creationTimestamp: "2022-05-05T02:28:58Z"
+    bind-mount-options:/opt/jupyter/jupyter-app/jupyter-lab: z
+    bind-mount-options:/opt/jupyter/jupyter-lab: z
+    io.containers.autoupdate/jupyter-app/jupyter-lab: registry
+    io.containers.autoupdate/jupyter/jupyter-app/jupyter-lab: registry
+    io.kubernetes.cri-o.ContainerType/jupyter-app/jupyter-lab: container
+    io.kubernetes.cri-o.SandboxID/jupyter-app/jupyter-lab: 2a7ec0475b87cc3b932365b695b67510c28fa971a0f83e7a54713851b30ee1b
+    io.podman.annotations.autoremove/jupyter-app/jupyter-lab: "FALSE"
+    io.podman.annotations.init/jupyter-app/jupyter-lab: "FALSE"
+    io.podman.annotations.privileged/jupyter-app/jupyter-lab: "FALSE"
+    io.podman.annotations.publish-all/jupyter-app/jupyter-lab: "FALSE"
+  creationTimestamp: "2023-02-23T17:47:41Z"
   labels:
     app: jupyter
   name: jupyter
@@ -23,21 +26,22 @@ spec:
     - start-notebook.sh
     - --NotebookApp.token=
     image: docker.io/jupyter/scipy-notebook:latest
-    name: jupyter
+    name: lab
     ports:
     - containerPort: 8888
       hostPort: 10001
+    resources: {}
     securityContext:
-      capabilities:
-        drop:
-        - CAP_MKNOD
-        - CAP_NET_RAW
-        - CAP_AUDIT_WRITE
+      runAsNonRoot: true
     volumeMounts:
-    - mountPath: /home/jovyan/work
+    - mountPath: /home/jovyan/
       name: opt-jupyter-host-0
+  hostname: jupyter
+  restartPolicy: Unless-stopped
   volumes:
   - hostPath:
       path: /opt/jupyter
       type: Directory
     name: opt-jupyter-host-0
+status: {}
+
