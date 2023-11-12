@@ -1,0 +1,22 @@
+# Audiobookshelf quadlet
+
+[Container]
+ContainerName=audiobookshelf
+Image=ghcr.io/advplyr/audiobookshelf:latest
+AutoUpdate=registry
+
+PublishPort=10003:80
+
+Volume=abs-config:/config:Z
+Volume=abs-metadata:/metadata:Z
+Volume=/srv/share/music/audiobooks:/audiobooks:z
+
+Timezone=local
+
+UserNS=keep-id
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target
