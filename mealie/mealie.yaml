@@ -1,0 +1,43 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-4.6.1
+
+# NOTE: If you generated this yaml from an unprivileged and rootless podman container on an SELinux
+# enabled system, check the podman generate kube man page for steps to follow to ensure that your pod/container
+# has the right permissions to access the volumes added.
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    bind-mount-options: /opt/mealie/data:z
+    io.containers.autoupdate/mealie: registry
+  creationTimestamp: "2023-10-13T17:20:30Z"
+  labels:
+    app: mealie-pod
+  name: mealie-pod
+spec:
+  containers:
+  - env:
+    - name: MAX_WORKERS
+      value: "1"
+    - name: ALLOW_SIGNUP
+      value: "true"
+    - name: WEB_CONCURRENCY
+      value: "1"
+    - name: BASE_URL
+      value: https://food.domain.local
+    image: ghcr.io/mealie-recipes/mealie:nightly
+    name: mealie
+    ports:
+    - containerPort: 9000
+      hostPort: 10006
+    volumeMounts:
+    - mountPath: /app/data
+      name: opt-mealie-data-host-0
+  volumes:
+  - hostPath:
+      path: /opt/mealie/data
+      type: Directory
+    name: opt-mealie-data-host-0

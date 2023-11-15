@@ -4,6 +4,7 @@ Description=Mealie Recipes Webapp
 
 [Container]
 ContainerName=mealie
+# mealie:nightly or mealie:v1.0.0-RC1.1
 Image=ghcr.io/mealie-recipes/mealie:nightly
 AutoUpdate=registry
 
@@ -14,7 +15,7 @@ Volume=/opt/mealie/data:/app/data:z
 Environment=ALLOW_SIGNUP=true
 Environment=MAX_WORKERS=1
 Environment=WEB_CONCURRENCY=1
-Environment=BASE_URL=https://food.home.janolaf.ca
+Environment=BASE_URL=https://food.yourdomain.local
 
 Timezone=America/Winnipeg
 

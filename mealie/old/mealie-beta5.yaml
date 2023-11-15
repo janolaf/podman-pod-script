@@ -17,7 +17,7 @@ spec:
     - name: WEB_CONCURRENCY
       value: "1"
     - name: BASE_URL
-      value: http://food.mealie.local
+      value: http://food.yourdomain.local
     - name: MAX_WORKERS
       value: "1"
     - name: ALLOW_SIGNUP

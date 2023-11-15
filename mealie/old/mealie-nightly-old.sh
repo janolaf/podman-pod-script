@@ -6,7 +6,7 @@ podman container create --name mealie-app --pod mealie \
 	--volume /opt/mealie/data:/app/data:z \
 	--tz=America/Winnipeg \
 	-e ALLOW_SIGNUP=true \
-	-e BASE_URL='http://food.home.janolaf.ca' \
+	-e BASE_URL='http://food.yourdomain.local' \
     -e MAX_WORKERS=1 \
     -e WEB_CONCURRENCY=1 \
 	--label io.containers.autoupdate=registry ghcr.io/mealie-recipes/mealie:nightly \
