@@ -98,7 +98,7 @@ spec:
       name: opt-authentik-custom-templates-host-2
   - env:
     - name: AUTHENTIK_HOST
-      value: https://sso.home.janolaf.ca
+      value: https://sso.domain.ltd
     - name: AUTHENTIK_INSECURE
       value: "false"
     - name: AUTHENTIK_TOKEN

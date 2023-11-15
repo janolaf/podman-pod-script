@@ -66,7 +66,7 @@ podman container create --pod authentik \
    	--name authentik-ldap \
     --replace \
    	--label 'io.containers.autoupdate=registry' \
-   	-e AUTHENTIK_HOST=https://sso.home.janolaf.ca \
+   	-e AUTHENTIK_HOST=https://sso.domain.ltd \
    	-e AUTHENTIK_INSECURE=false \
    	-e AUTHENTIK_TOKEN=TOKEN \
    	ghcr.io/goauthentik/ldap
