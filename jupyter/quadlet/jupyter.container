@@ -3,14 +3,16 @@ ContainerName=jupyter
 Image=docker.io/jupyter/scipy-notebook:latest
 AutoUpdate=registry
 
-Volume=jupyter.volume:/home/jovyan/work:Z
+Volume=jupyter:/home/jovyan/work:Z
 
-Exec=start-notebook.sh --NotebookApp.token=''
+UserNS=keep-id
+
+Exec=start-notebook.sh --ServerApp.token=''
 
 PublishPort=10001:8888
 Network=jupyter.network
 
-Timezone=America/Winnipeg
+Timezone=local
 
 [Service]
 TimeoutStartSec=900
