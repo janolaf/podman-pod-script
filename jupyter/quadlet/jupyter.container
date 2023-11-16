@@ -1,0 +1,19 @@
+[Container]
+ContainerName=jupyter
+Image=docker.io/jupyter/scipy-notebook:latest
+AutoUpdate=registry
+
+Volume=jupyter.volume:/home/jovyan/work:Z
+
+Exec=start-notebook.sh --NotebookApp.token=''
+
+PublishPort=10001:8888
+Network=jupyter.network
+
+Timezone=America/Winnipeg
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target
