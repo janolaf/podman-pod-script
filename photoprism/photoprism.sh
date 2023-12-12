@@ -1,6 +1,7 @@
 podman pod create --name photoprism -p 10009:2342
 
 podman container create --name photoprism-db --pod photoprism \
+	--replace \
 	--restart unless-stopped \
 	--label io.containers.autoupdate=registry \
 	-v /opt/photoprism/db:/var/lib/mysql:Z \
@@ -11,6 +12,7 @@ podman container create --name photoprism-db --pod photoprism \
 	docker.io/library/mariadb:10.6 mysqld --innodb-buffer-pool-size=128M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
 
 podman container create --name photoprism-app --pod photoprism \
+	--replace \
 	--label io.containers.autoupdate=registry \
 	--userns=keep-id \
 	-v /opt/photoprism/original:/photoprism/originals:z \
