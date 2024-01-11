@@ -10,16 +10,16 @@ mkdir -p /opt/authentik/custom-templates
 mkdir -p /opt/authentik/media
 mkdir -p /opt/authentik/backups
 
-
 # generate random strings and store them as podman secrets
-openssl rand 15 | podman secret create authentik-postgres-secret -
-openssl rand 15 | podman secret create authentik-key -
+openssl rand -base64 36 | podman secret create authentik-postgres-secret -
+openssl rand -base64 36 | podman secret create authentik-key -
 
 # create Authentik Redis container
 podman container create --name authentik-redis \
     --pod authentik \
     --replace \
 	--label 'io.containers.autoupdate=registry' \
+	-v authentik-radis:/data:z \
     docker.io/redis:alpine
 
 # create Authentik database container (Postgresql)
@@ -28,22 +28,20 @@ podman container create --name authentik-db \
     --replace \
 	--label 'io.containers.autoupdate=registry' \
 	-e POSTGRES_USER="authentik" \
-	# -e POSTGRES_PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
 	--secret authentik-postgres-secret,type=env,POSTGRES_PASSWORD \
-	-e PGDATA=/var/lib/postgresql/data/pgdata \
+	-e POSTGRES_DB=/var/lib/postgresql/data/pgdata \
 	-v /opt/authentik/db:/var/lib/postgresql/data/pgdata:z \
-    docker.io/postgres:14-alpine
+    docker.io/postgres:16-alpine
 
 # create Authentik-Server container
 podman container create --pod authentik \
     --name authentik-server \
     --replace \
 	--label 'io.containers.autoupdate=registry' \
-	-e AUTHENTIK_REDIS__HOST=127.0.0.1 \
-    -e AUTHENTIK_POSTGRESQL__HOST=127.0.0.1 \
+	-e AUTHENTIK_REDIS__HOST=authentik-redis \
+    -e AUTHENTIK_POSTGRESQL__HOST=authentik-db \
     -e AUTHENTIK_POSTGRESQL__USER=authentik \
     -e AUTHENTIK_POSTGRESQL__NAME=authentik \
-    # -e AUTHENTIK_POSTGRESQL__PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
     --secret authentik-postgres-secret,type=env,AUTHENTIK_POSTGRESQL__PASSWORD \
 	--secret authentik-key,type=env,AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
@@ -56,15 +54,15 @@ podman container create --pod authentik \
     --name authentik-worker \
     --replace \
     --label 'io.containers.autoupdate=registry' \
-    -e AUTHENTIK_REDIS__HOST=127.0.0.1 \
-    -e AUTHENTIK_POSTGRESQL__HOST=127.0.0.1 \
+    -e AUTHENTIK_REDIS__HOST=authentik-redis \
+    -e AUTHENTIK_POSTGRESQL__HOST=authentik_db \
     -e AUTHENTIK_POSTGRESQL__USER=authentik \
     -e AUTHENTIK_POSTGRESQL__NAME=authentik \
     --secret authentik-postgres-secret,type=env,AUTHENTIK_POSTGRESQL__PASSWORD \
 	--secret authentik-key,type=env,AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
     -v /opt/authentik/custom-templates:/templates:z \
-    -v /opt/authentik/backups:/backups:z \
+    -v /opt/authentik/certs:/certs:z \
     ghcr.io/goauthentik/server \
     worker
 
