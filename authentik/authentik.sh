@@ -10,6 +10,11 @@ mkdir -p /opt/authentik/custom-templates
 mkdir -p /opt/authentik/media
 mkdir -p /opt/authentik/backups
 
+
+# generate random strings and store them as podman secrets
+openssl rand 15 | podman secret create authentik-postgres-secret -
+openssl rand 15 | podman secret create authentik-key -
+
 # create Authentik Redis container
 podman container create --name authentik-redis \
     --pod authentik \
@@ -23,7 +28,8 @@ podman container create --name authentik-db \
     --replace \
 	--label 'io.containers.autoupdate=registry' \
 	-e POSTGRES_USER="authentik" \
-	-e POSTGRES_PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
+	# -e POSTGRES_PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
+	--secret authentik-postgres-secret,type=env,POSTGRES_PASSWORD \
 	-e PGDATA=/var/lib/postgresql/data/pgdata \
 	-v /opt/authentik/db:/var/lib/postgresql/data/pgdata:z \
     docker.io/postgres:14-alpine
@@ -37,8 +43,9 @@ podman container create --pod authentik \
     -e AUTHENTIK_POSTGRESQL__HOST=127.0.0.1 \
     -e AUTHENTIK_POSTGRESQL__USER=authentik \
     -e AUTHENTIK_POSTGRESQL__NAME=authentik \
-    -e AUTHENTIK_POSTGRESQL__PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
-    -e AUTHENTIK_SECRET_KEY="SDCdtYtaHnlAzSr63fTIASYqqOfDQlNtECPIzFx1969JqdhO6A" \
+    # -e AUTHENTIK_POSTGRESQL__PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
+    --secret authentik-postgres-secret,type=env,AUTHENTIK_POSTGRESQL__PASSWORD \
+	--secret authentik-key,type=env,AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
     -v /opt/authentik/custom-templates:/templates:z \
     ghcr.io/goauthentik/server \
@@ -53,8 +60,8 @@ podman container create --pod authentik \
     -e AUTHENTIK_POSTGRESQL__HOST=127.0.0.1 \
     -e AUTHENTIK_POSTGRESQL__USER=authentik \
     -e AUTHENTIK_POSTGRESQL__NAME=authentik \
-    -e AUTHENTIK_POSTGRESQL__PASSWORD="IrXI1iozo72RBjEPNqTKMmeIa0E97nomX2agQSH0" \
-    -e AUTHENTIK_SECRET_KEY="SDCdtYtaHnlAzSr63fTIASYqqOfDQlNtECPIzFx1969JqdhO6A" \
+    --secret authentik-postgres-secret,type=env,AUTHENTIK_POSTGRESQL__PASSWORD \
+	--secret authentik-key,type=env,AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
     -v /opt/authentik/custom-templates:/templates:z \
     -v /opt/authentik/backups:/backups:z \
@@ -68,5 +75,5 @@ podman container create --pod authentik \
    	--label 'io.containers.autoupdate=registry' \
    	-e AUTHENTIK_HOST=https://sso.domain.ltd \
    	-e AUTHENTIK_INSECURE=false \
-   	-e AUTHENTIK_TOKEN=TOKEN \
+   	--secret authentik-token,type=env,AUTHENTIK_TOKEN=TOKEN \
    	ghcr.io/goauthentik/ldap
