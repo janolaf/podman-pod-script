@@ -46,6 +46,7 @@ podman container create --pod authentik \
     --secret authentik-postgres-secret,type=env,target=AUTHENTIK_POSTGRESQL__PASSWORD \
 	--secret authentik-key,type=env,target=AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
+    -v /opt/authentik/certs:/certs:z \
     -v /opt/authentik/custom-templates:/templates:z \
     ghcr.io/goauthentik/server \
     server
@@ -56,9 +57,9 @@ podman container create --pod authentik \
     --replace \
     --label 'io.containers.autoupdate=registry' \
     -e AUTHENTIK_REDIS__HOST=authentik-redis \
-    -e AUTHENTIK_POSTGRESQL__HOST=authentik_db \
-    -e AUTHENTIK_POSTGRESQL__USER=authentik \
-    -e AUTHENTIK_POSTGRESQL__NAME=authentik \
+    -e AUTHENTIK_POSTGRESQL__HOST=authentik-db \
+    -e AUTHENTIK_POSTGRESQL__USER="authentik" \
+    -e AUTHENTIK_POSTGRESQL__NAME="authentik" \
     --secret authentik-postgres-secret,type=env,target=AUTHENTIK_POSTGRESQL__PASSWORD \
 	--secret authentik-key,type=env,target=AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
