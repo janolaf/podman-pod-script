@@ -67,11 +67,11 @@ podman container create --pod authentik \
     worker
 
 # create Authentik LDAP container
-podman container create --pod authentik \
-   	--name authentik-ldap \
-    --replace \
-   	--label 'io.containers.autoupdate=registry' \
-   	-e AUTHENTIK_HOST=https://sso.domain.ltd \
-   	-e AUTHENTIK_INSECURE=false \
-   	--secret authentik-token,type=env,AUTHENTIK_TOKEN=TOKEN \
-   	ghcr.io/goauthentik/ldap
+#podman container create --pod authentik \
+#   	--name authentik-ldap \
+#    --replace \
+#   	--label 'io.containers.autoupdate=registry' \
+#   	-e AUTHENTIK_HOST=https://sso.domain.ltd \
+#   	-e AUTHENTIK_INSECURE=false \
+#   	--secret authentik-token,type=env,AUTHENTIK_TOKEN=TOKEN \
+#   	ghcr.io/goauthentik/ldap
