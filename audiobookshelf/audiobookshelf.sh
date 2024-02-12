@@ -1,15 +1,14 @@
-#/bin/bash
-podman pod create --name audiobookshelf -p 10003:80 --replace
+#!/bin/bash
+# Must install udici to create SELinux policy.
 
-# Must install udici to create SELinux policy. 
-
-podman container create --pod audiobookshelf --name abs-app \
+podman container create --name audiobookshelf \
+	-p 10003:80 \
 	--replace \
-	--label io.containers.autoupdate=local \
+	--label io.containers.autoupdate=registry \
 	--security-opt "label=type:audiobookshelf.process" \
 	-v /opt/audiobookshelf/config:/config:Z \
 	-v /opt/audiobookshelf/metadata:/metadata:Z \
-	-v /path/to/audiobooks:/audiobooks:ro \
+	-v /location/of/audiobooks:/audiobooks:ro \
 	ghcr.io/advplyr/audiobookshelf:latest
 
-# TODO -- Addd Udici instructions 
+# TODO -- Addd Udici instructions
