@@ -8,6 +8,7 @@ podman network create authentik
 mkdir -p /opt/authentik/db
 mkdir -p /opt/authentik/custom-templates
 mkdir -p /opt/authentik/media
+mkdir -p /opt/authentik/certs
 mkdir -p /opt/authentik/backups
 
 # generate random strings and store them as podman secrets
@@ -28,10 +29,10 @@ podman container create --name authentik-db \
     --replace \
 	--label 'io.containers.autoupdate=registry' \
 	-e POSTGRES_USER="authentik" \
-	--secret authentik-postgres-secret,type=env,POSTGRES_PASSWORD \
-	-e POSTGRES_DB=/var/lib/postgresql/data/pgdata \
-	-v /opt/authentik/db:/var/lib/postgresql/data/pgdata:z \
-    docker.io/postgres:16-alpine
+	-e POSTGRES_DB="authentik" \
+	--secret authentik-postgres-secret,type=env,target=POSTGRES_PASSWORD \
+	-v /opt/authentik/db:/var/lib/postgresql/data:z \
+    docker.io/postgres:12-alpine
 
 # create Authentik-Server container
 podman container create --pod authentik \
@@ -40,11 +41,12 @@ podman container create --pod authentik \
 	--label 'io.containers.autoupdate=registry' \
 	-e AUTHENTIK_REDIS__HOST=authentik-redis \
     -e AUTHENTIK_POSTGRESQL__HOST=authentik-db \
-    -e AUTHENTIK_POSTGRESQL__USER=authentik \
-    -e AUTHENTIK_POSTGRESQL__NAME=authentik \
-    --secret authentik-postgres-secret,type=env,AUTHENTIK_POSTGRESQL__PASSWORD \
-	--secret authentik-key,type=env,AUTHENTIK_SECRET_KEY \
+    -e AUTHENTIK_POSTGRESQL__USER="authentik" \
+    -e AUTHENTIK_POSTGRESQL__NAME="authentik" \
+    --secret authentik-postgres-secret,type=env,target=AUTHENTIK_POSTGRESQL__PASSWORD \
+	--secret authentik-key,type=env,target=AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
+    -v /opt/authentik/certs:/certs:z \
     -v /opt/authentik/custom-templates:/templates:z \
     ghcr.io/goauthentik/server \
     server
@@ -55,11 +57,11 @@ podman container create --pod authentik \
     --replace \
     --label 'io.containers.autoupdate=registry' \
     -e AUTHENTIK_REDIS__HOST=authentik-redis \
-    -e AUTHENTIK_POSTGRESQL__HOST=authentik_db \
-    -e AUTHENTIK_POSTGRESQL__USER=authentik \
-    -e AUTHENTIK_POSTGRESQL__NAME=authentik \
-    --secret authentik-postgres-secret,type=env,AUTHENTIK_POSTGRESQL__PASSWORD \
-	--secret authentik-key,type=env,AUTHENTIK_SECRET_KEY \
+    -e AUTHENTIK_POSTGRESQL__HOST=authentik-db \
+    -e AUTHENTIK_POSTGRESQL__USER="authentik" \
+    -e AUTHENTIK_POSTGRESQL__NAME="authentik" \
+    --secret authentik-postgres-secret,type=env,target=AUTHENTIK_POSTGRESQL__PASSWORD \
+	--secret authentik-key,type=env,target=AUTHENTIK_SECRET_KEY \
     -v /opt/authentik/media:/media:z \
     -v /opt/authentik/custom-templates:/templates:z \
     -v /opt/authentik/certs:/certs:z \
