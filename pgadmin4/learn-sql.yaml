@@ -1,0 +1,47 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-4.9.3-dev
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2024-03-24T17:39:55Z"
+  labels:
+    app: learn-sql
+  name: learn-sql
+spec:
+  containers:
+  - args:
+    - postgres
+    env:
+    - name: POSTGRES_USER
+      value: your_user_name
+    - name: POSTGRES_PASSWORD
+      value: your_db_password
+    image: docker.io/library/postgres:latest
+    name: db
+    ports:
+    - containerPort: 80
+      hostPort: 10004
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: postgres-db-pvc
+  - env:
+    - name: PGADMIN_DEFAULT_EMAIL
+      value: your_user_name@email_address.local
+    - name: PGADMIN_DEFAULT_PASSWORD
+      value: your_db_password
+    image: docker.io/dpage/pgadmin4:latest
+    name: pgadmin4
+    securityContext: {}
+    volumeMounts:
+    - mountPath: /var/lib/pgadmin
+      name: pgadmin-data-pvc
+  volumes:
+  - name: postgres-db-pvc
+    persistentVolumeClaim:
+      claimName: postgres-db
+  - name: pgadmin-data-pvc
+    persistentVolumeClaim:
+      claimName: pgadmin-data
+
