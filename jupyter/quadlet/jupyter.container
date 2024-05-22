@@ -1,14 +1,14 @@
 [Container]
 ContainerName=jupyter
-Image=docker.io/jupyter/scipy-notebook:latest
+Image=quay.io/jupyter/datascience-notebook:latest
 AutoUpdate=registry
-
-Volume=jupyter:/home/jovyan/work:Z
+Volume=jupyter:/home/jovyan/work:z
+Volume=/home/jbakker/git/Complete-Python-3-Bootcamp:/Complete-Python-3-Bootcamp:z
 
 UserNS=keep-id
 
 Exec=start-notebook.sh --ServerApp.token=''
-
+Environment=HOSTNAME="jupyter.home.janolaf.ca"
 PublishPort=10001:8888
 Network=jupyter.network
 
