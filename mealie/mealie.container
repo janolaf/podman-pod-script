@@ -4,8 +4,7 @@ Description=Mealie Recipes Webapp
 
 [Container]
 ContainerName=mealie
-# mealie:nightly or mealie:v1.0.0-RC1.1
-Image=ghcr.io/mealie-recipes/mealie:nightly
+Image=ghcr.io/mealie-recipes/mealie:1.8.0
 AutoUpdate=registry
 
 PublishPort=10006:9000
@@ -17,7 +16,7 @@ Environment=MAX_WORKERS=1
 Environment=WEB_CONCURRENCY=1
 Environment=BASE_URL=https://food.yourdomain.local
 
-Timezone=America/Winnipeg
+Timezone=local
 
 [Install]
 WantedBy=multi-user.target default.target
