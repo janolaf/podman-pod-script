@@ -1,4 +1,3 @@
-# mealie.kube
 [Unit]
 Description=Mealie Recipes Webapp
 
@@ -17,6 +16,8 @@ Environment=WEB_CONCURRENCY=1
 Environment=BASE_URL=https://food.yourdomain.local
 
 Timezone=local
+
+Network=podman
 
 [Install]
 WantedBy=multi-user.target default.target
