@@ -8,7 +8,7 @@ podman container create --name keycloak-db \
     -e POSTGRES_USER=keycloak_user \
     -e POSTGRES_PASSWORD=empireatwar \
     -e POSTGRES_DB=keycloakDB \
-    docker.io/postgres:16
+    docker.io/postgres:17
 
 podman container create --name keycloak-app \
     --replace \
