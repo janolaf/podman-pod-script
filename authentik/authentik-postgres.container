@@ -1,0 +1,19 @@
+# authentik-db
+
+[Unit]
+Description=Authentik Postgress Container
+
+Pod=authentik.pod
+ContainerName=authentik-db
+Image=docker.io/library/postgres:16-alpine
+AutoUpdate=registry
+
+Network=authentik.network
+Volume=authentik-db:/var/lib/postgresql/data:z
+
+Enviroment=POSTGRES_PASSWORD=
+Enviroment=POSTGRES_USER=
+Enviroment=POSTGRES_DB=
+
+[Install]
+WantedBy=multi-user.target

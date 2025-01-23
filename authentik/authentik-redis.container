@@ -1,0 +1,22 @@
+[Unit]
+Descriptions=Authentik Valkey Server
+Requires=authentik-db.service
+After=authentik-db.service
+
+[Container]
+Pod=authentik.pod
+ContainerName=authentik-valkey
+AutoUpdate=registry
+
+Network=authentik.network
+
+Volume=authentik-redis:/data
+
+Environment=AUTHENTIK__HOST=
+Environment=AUTHENTIK_POSTGRES__HOST=postgres
+Environment=AUTHENTIK_POSTGRESQL__USER=
+Environment=AUTHENTIK_POSTGRESQL__NAME=
+Environment=AUTHENTIK_POSTGRESQL__PASSWORD=
+
+[Install]
+WantedBy=multi-user.target
