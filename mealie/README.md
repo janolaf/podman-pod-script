@@ -1,14 +1,14 @@
-# Using Quadlet to Manage mealie
+# Using Quadlet to Manage Mealie
 
-There are two options: 
-    'mealie.container', which uses the internal SQLlite datebase. 
-    Mealie Pod, which using postgres 17. THe Pod directory containers three files, mealie.pod, mealie-app.container and mealie-db.container. 
+There are two options:
+    1.'mealie.container', which uses the internal SQLite database.
+    2. Mealie Pod, which uses postgres 17. The Pod directory contains three files, mealie.pod, mealie-app.container and mealie-db.container.
 
-Regardless of which you use, I store all files in /opt/melalie. If you wish to use volumes, replace /opt/mealie/data and /opt/mealie/db with approiate volume names.
+Regardless of which you use, I store all files in /opt/melalie. If you wish to use volumes, replace /opt/mealie/data and /opt/mealie/db with appropriate volume names.
 
 # Setup
 
-## Create directories 
+## Create directories
 
 `sudo mkdir -p /opt/mealie/{data,db}`
 
@@ -26,5 +26,4 @@ copy files from either container/ or pod/
 create a random postgres password and store it as a podman secret.
 
 'openssl rand -base64 64 | podman secret create mealie-db-password -'
-
 
