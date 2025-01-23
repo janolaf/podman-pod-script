@@ -1,24 +1,22 @@
 # podman-pod-script
-Stores my shell and kube pod scripts created by podman. 
-Some have not been tested in a while.
 
-Most are converted Docker Compose scripts.
+Most of the scripts are old. Moving everything over to quadlet files.
 
-## Current SHell Scripts 
-* photoprism (converted docker-compose)
-* audiobookshelf
-* calibre-web
-* photoview
-* typemill
-* audiobookshelf
+## Current Quadlets
+
+- Mealie
+- Audiobookshelf
+- Minecraft Bedrock Server
+
+## Current SHell Scripts
+
+- photoprism (converted docker-compose)
 
 ## Current Kube YAML
-* heimdall
-* jupyter
-* mealie
-* valhiem docker server
-* authentik
+
+- valhiem docker server
+- pgAdmin4
 
 # TODO
-Need to add Udici instructions. If you use SELinux, Audiobookshelf will be 
-prevented from playing audio files from a shared directory.
+
+Need to add Udici instructions. If you use SELinux, Audiobookshelf will be prevented from playing audio files from a shared directory.
