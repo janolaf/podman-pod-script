@@ -1,0 +1,42 @@
+# https://github.com/itzg/docker-minecraft-bedrock-server
+
+[Unit]
+Description=Minecraft Bedrock Server
+
+[Container]
+Image=docker.io/itzg/minecraft-bedrock-server:latest
+AutoUpdate=registry
+ContainerName=Minecraft-bedrock-server
+
+Environment=SERVER_NAME="Bakker Survival"
+Environment=ENABLE_LAN_VISIBILITY=true
+Environment=EULA=TRUE
+Environment=GAMEMODE=survival
+Environment=DIFFICULTY=easy
+
+Timezone=local
+
+### OPS defines operators ###
+### MEMBERS define members ###
+### VISITOR defines vistors ###
+
+#Environment=OPS="1,1"
+#Environment=MEMBERS="1,1"
+#Environment=VISITORS="2,2"
+
+# Example commands. THe first prevnets PVP, the second command shows coordinates by default
+Exec=send-command gamerule pvp false
+Exec=send-command gamerule showcoordinates true
+
+
+PublishPort=25565:25565
+PublishPort=19132:19132/udp
+
+Volume=/opt/minecraft/data:/data:z
+
+[Service]
+Restart=unless-stopped
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target
