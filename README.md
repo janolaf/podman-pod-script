@@ -1,6 +1,12 @@
-# podman-pod-script
+# Podman Scripts   
 
-Most of the scripts are old. Moving everything over to quadlet files.
+This repository is a collection of shellscripts, kubernetes yaml, and podman quadlet files to deploy containers using podman.
+
+Most scripts take the projects docker compose.yaml file and translate them into a podman friendly format.
+
+Many of the scripts need to be fixed or retested, as it has been years since I have touched them.
+
+All examples here have been deployed on Fedora and either Red Hat Enterprise 9 or Centos Streams 9.
 
 ## Current Quadlets
 
@@ -16,7 +22,3 @@ Most of the scripts are old. Moving everything over to quadlet files.
 
 - valhiem docker server
 - pgAdmin4
-
-# TODO
-
-Need to add Udici instructions. If you use SELinux, Audiobookshelf will be prevented from playing audio files from a shared directory.
