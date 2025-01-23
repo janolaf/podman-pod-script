@@ -1,0 +1,3 @@
+[Pod]
+PodName=mealie
+PublishPort=10006:9000

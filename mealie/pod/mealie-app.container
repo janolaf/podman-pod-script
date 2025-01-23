@@ -1,0 +1,30 @@
+# mealie.kube
+[Unit]
+Description=Mealie Recipes Webapp
+After=Network.target
+[Container]
+ContainerName=mealie-app
+Pod=mealie.pod
+Image=ghcr.io/mealie-recipes/mealie:latest
+AutoUpdate=registry
+
+#PublishPort=10006:9000
+
+Volume=/opt/mealie/data:/app/data:Z
+
+Environment=ALLOW_SIGNUP=true
+Environment=MAX_WORKERS=1
+Environment=WEB_CONCURRENCY=1
+Environment=BASE_URL=https://food.home.janolaf.ca
+
+Timezone=local
+
+Environment=DB_ENGINE=postgres
+Environment=POSTGRES_USER=mealie
+Environment=POSTGRES_DB=mealie
+Secret=mealie-db-password,type=env,target=POSTGRES_PASSWORD
+Environment=POSTGRES_SERVER=mealie-db
+Environment=POSTGRES_PORT=5432
+
+[Install]
+WantedBy=default.target
